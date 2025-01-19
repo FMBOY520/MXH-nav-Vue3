@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+/* 设置滚动条的宽度和背景色 */
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #ecb4dc;
+}
+
+/* 设置滚动条的滑块颜色和形状 */
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border-radius: 10px;
+}
