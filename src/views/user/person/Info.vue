@@ -1,9 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { ArrowRight, Plus, Upload } from '@element-plus/icons-vue'
+import { Plus, Upload } from '@element-plus/icons-vue'
 
-import DefaultAvatar from '@/assets/img/M.jpg'
+// 面包屑
+import Breadcrumb from '@/components/Breadcrumb.vue'
+
+// 默认头像
+import DefaultAvatar from '@/assets/img/Avater.png'
 
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
@@ -24,19 +28,14 @@ const uploadAvatar = () => {
 }
 
 const data = ref({
-  nickname: '肥猫BOY',
-  bio: 'hello world ~'
+  nickname: userStore.info.nickname,
+  bio: userStore.info.bio,
 })
 </script>
 
 <template>
   <!-- 面包屑 -->
-  <el-breadcrumb :separator-icon="ArrowRight"
-    style="margin-bottom: 20px;padding: 10px;background-color: #ffffff;border-radius: 4px;box-shadow: var(--el-box-shadow-light);">
-    <el-breadcrumb-item :to="{ path: '/user/index' }">首页</el-breadcrumb-item>
-    <el-breadcrumb-item>个人中心</el-breadcrumb-item>
-    <el-breadcrumb-item>基本资料</el-breadcrumb-item>
-  </el-breadcrumb>
+  <Breadcrumb :nav="['个人中心', '基本资料']"></Breadcrumb>
 
   <el-card>
     <!-- 头像 -->

@@ -3,14 +3,34 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
 
+import { login } from '@/api'
+
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
+
 const data = ref({
   username: '',
   password: '',
 })
 
+// 登录按钮
 const loginBtn = async () => {
-  ElMessage.success('登录成功')
-  router.push('/user/index')
+  if (data.value.username.trim() === '' || data.value.password.trim() === '') {
+    data.value.username = data.value.username.trim()
+    data.value.password = ''
+    ElMessage.error('用户名或密码不能为空！')
+    return
+  }
+  const res = await login(data.value)
+  console.log(res.data);
+  if (res.data.status === 200) {
+    userStore.setInfo(res.data.data)
+    userStore.setToken(res.data.token)
+    router.push('/user/index')
+    ElMessage.success('登录成功')
+  } else {
+    ElMessage.error('用户名或密码错误！')
+  }
 }
 </script>
 

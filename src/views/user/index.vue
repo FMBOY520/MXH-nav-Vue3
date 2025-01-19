@@ -4,6 +4,12 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted } from 'vue'
 onMounted(() => document.title = '喵星汇-导航 v3 | 管理后台')
 
+// 默认头像
+import DefaultAvatar from '@/assets/img/Avater.png'
+
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
+
 // 侧边菜单栏
 import Menu from '@/components/Menu.vue'
 
@@ -16,6 +22,8 @@ const logout = () => {
   ElMessageBox.confirm('确定退出登录吗？', {
     confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
   }).then(() => {
+    userStore.removeInfo()
+    userStore.removeToken()
     routeTo('/login')
     ElMessage.success('退出登录！')
   }).catch(() => { })
@@ -32,11 +40,10 @@ const logout = () => {
     <el-container>
       <el-header>
         <div class="toolbar">
-          <span class="name">肥猫BOY</span>
+          <span class="name">{{ userStore.info.nickname ? userStore.info.nickname : userStore.info.email }}</span>
           <el-dropdown>
             <span class="el-dropdown-link">
-              <el-avatar :size="35"
-                src="https://foruda.gitee.com/avatar/1704047072446932778/13915683_fmboy_1704047072.png" />
+              <el-avatar :size="35" :src="userStore.info.avatar || DefaultAvatar" />
               <el-icon style="margin-left: 5px;">
                 <CaretBottom />
               </el-icon>
