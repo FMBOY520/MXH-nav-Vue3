@@ -3,14 +3,25 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus, Upload } from '@element-plus/icons-vue'
 
+// 用户仓库
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
+
+import { getUserInfo, updateInfo } from '@/api'
+// 获取用户基本信息
+const getInfo = async () => {
+  const res = await getUserInfo()
+  userStore.setInfo(res.data.data)
+}
+getInfo()
+
 // 面包屑
 import Breadcrumb from '@/components/Breadcrumb.vue'
 
 // 默认头像
 import DefaultAvatar from '@/assets/img/Avater.png'
 
-import { useUserStore } from '@/stores'
-const userStore = useUserStore()
+
 
 // 头像
 const avatarUrl = ref(userStore.info.avatar)
@@ -31,10 +42,19 @@ const uploadAvatar = () => {
   showUpdateAvatar.value = false
 }
 
+// 用户基本资料
 const data = ref({
   nickname: userStore.info.nickname,
   bio: userStore.info.bio,
 })
+const updateInfoBtn = async () => {
+  const res = await updateInfo(data.value)
+  // console.log(res.data)
+  if (res.data.status === 200) {
+    getInfo()
+    ElMessage.success('更新成功！')
+  }
+}
 </script>
 
 <template>
@@ -66,11 +86,11 @@ const data = ref({
       <el-form-item label="自我介绍">
         <el-input :rows="5" v-model="data.bio" type="textarea" placeholder="~~~" />
       </el-form-item>
-      <el-button type="warning">更新</el-button>
+      <el-button type="warning" @click="updateInfoBtn()">更新</el-button>
     </el-form>
 
     <el-divider><span style="color: #606266;font-size: 12px;">更多信息</span></el-divider>
-    <p style="color: #606266;font-size: 12px;">注册时间：<span>2025-01-01</span></p>
+    <p style="color: #606266;font-size: 12px;">注册时间：<span>{{ userStore.info.create_time.split('T')[0] }}</span></p>
 
   </el-card>
 

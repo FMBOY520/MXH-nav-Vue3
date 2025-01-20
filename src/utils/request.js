@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
+
 // 服务器基地址
 const baseURL = '/api'
 
@@ -15,6 +18,7 @@ request.interceptors.request.use(
   (config) => {
     console.log('请求正常')
     // console.log(config)
+    config.headers.Authorization = userStore.token
     return config
   },
   (error) => {
