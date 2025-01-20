@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 // 服务器基地址
 const baseURL = '/api'
@@ -6,7 +7,7 @@ const baseURL = '/api'
 // 注册请求
 const request = axios.create({
   baseURL,        // 服务器基地址
-  timeout: 10000  // 超时时间
+  timeout: 60000  // 超时时间
 })
 
 // 添加请求拦截器
@@ -33,6 +34,9 @@ request.interceptors.response.use(
   (error) => {
     console.log('响应错误')
     // console.log(error)
+    if (error.status === 500) {
+      ElMessage.error(`无法连接到服务器！| ${error.status}`)
+    }
     return Promise.reject(error)
   }
 )

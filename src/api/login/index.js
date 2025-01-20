@@ -19,3 +19,8 @@ export const resetPassword = (data) => {
 export const getEmailCode = (data) => {
     return request.post('/mxh-nav/email', data)
 }
+
+// 退出登录
+export const logout = () => {
+    return request.post('/mxh-nav/logout')
+}

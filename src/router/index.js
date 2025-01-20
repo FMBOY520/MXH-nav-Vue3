@@ -36,12 +36,11 @@ const router = createRouter({
 // 路由守卫
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
-  next()
-  // if (to.meta.requiresAuth && !userStore.token) {
-  //   router.push('/login')
-  // } else {
-  //   next()
-  // }
+  if (to.meta.requiresAuth && !userStore.token) {
+    router.push('/login')
+  } else {
+    next()
+  }
 
   // if (to.path.split('/')[1] === 'admin' && userStore.info.role !== 'admin') {
   //   router.push('/404')

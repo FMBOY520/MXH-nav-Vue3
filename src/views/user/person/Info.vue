@@ -17,7 +17,11 @@ const avatarUrl = ref(userStore.info.avatar)
 const showUpdateAvatar = ref(false)
 const onSelectFile = (uploadFile) => {
   console.log(uploadFile);
-  avatarUrl.value = URL.createObjectURL(uploadFile.raw)
+  const formData = new FormData()
+  formData.append('file', uploadFile);
+  // avatarUrl.value = URL.createObjectURL(uploadFile.raw)
+  console.log(formData);
+
 }
 const uploadAvatar = () => {
   console.log('上传')
