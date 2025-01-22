@@ -4,6 +4,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted } from 'vue'
 onMounted(() => document.title = '喵星汇-导航 v3 | 管理后台')
 
+// import { logout } from '@/api'
+
 // 默认头像
 import DefaultAvatar from '@/assets/img/Avater.png'
 

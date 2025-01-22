@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-
+import router from '@/router'
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
 
@@ -38,8 +38,14 @@ request.interceptors.response.use(
   (error) => {
     console.log('响应错误')
     // console.log(error)
+    if (error.response.data.status) {
+      ElMessage.error(`服务器内部错误，请尝试重新登陆！| ${error.status}`)
+      router.push('/login')
+      return Promise.reject(error)
+    }
     if (error.status === 500) {
       ElMessage.error(`无法连接到服务器！| ${error.status}`)
+      router.push('/login')
     }
     return Promise.reject(error)
   }

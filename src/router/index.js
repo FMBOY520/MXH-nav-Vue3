@@ -42,9 +42,9 @@ router.beforeEach((to, from, next) => {
     next()
   }
 
-  // if (to.path.split('/')[1] === 'admin' && userStore.info.role !== 'admin') {
-  //   router.push('/404')
-  // }
+  if (to.path.split('/')[1] === 'admin' && userStore.info.role !== 'admin') {
+    router.push('/404')
+  }
 })
 
 export default router

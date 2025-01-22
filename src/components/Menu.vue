@@ -1,5 +1,8 @@
 <script setup>
-import { Avatar, Histogram, HomeFilled, Lock, Menu, User, UserFilled, View } from '@element-plus/icons-vue'
+import { Avatar, Histogram, HomeFilled, Lock, Menu, User, UserFilled } from '@element-plus/icons-vue'
+
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
 
 const props = defineProps({
   height: String,
@@ -38,28 +41,23 @@ const props = defineProps({
         </el-menu-item>
       </el-sub-menu>
 
-      <el-sub-menu index="5" v-if="true">
+      <el-sub-menu index="5" v-if="userStore.info.role === 'admin'">
         <template #title>
           <el-icon><Avatar /></el-icon>
           <span>管理员</span>
         </template>
-        <el-menu-item index="/admin/navigation">
-          <el-icon><View /></el-icon>
-          <span>审核管理</span>
-        </el-menu-item>
         <el-menu-item index="/admin/user">
-          <el-icon><View /></el-icon>
+          <el-icon><User /></el-icon>
           <span>用户管理</span>
         </el-menu-item>
         <el-menu-item index="/admin/category">
-          <el-icon><View /></el-icon>
+          <el-icon><Menu></Menu></el-icon>
           <span>分类管理</span>
         </el-menu-item>
         <el-menu-item index="/admin/navigation">
-          <el-icon><View /></el-icon>
+          <el-icon><Histogram /></el-icon>
           <span>导航管理</span>
         </el-menu-item>
-       
       </el-sub-menu>
 
     </el-menu>

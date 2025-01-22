@@ -1,9 +1,9 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
 
-import { login } from '@/api'
+import { login } from '@/api/login.js'
 
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()

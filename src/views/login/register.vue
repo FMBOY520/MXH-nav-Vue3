@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
 
-import { getEmailCode, register } from '@/api'
+import { getEmailCode, register } from '@/api/login.js'
 
 const data = ref({
   username: '',

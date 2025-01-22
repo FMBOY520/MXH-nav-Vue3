@@ -7,7 +7,7 @@ import { Plus, Upload } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
 
-import { getUserInfo, updateInfo } from '@/api'
+import { getUserInfo, updateInfo } from '@/api/user.js'
 // 获取用户基本信息
 const getInfo = async () => {
   const res = await getUserInfo()

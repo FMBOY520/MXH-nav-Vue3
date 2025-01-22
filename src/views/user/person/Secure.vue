@@ -8,7 +8,8 @@ import Breadcrumb from '@/components/Breadcrumb.vue'
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
 
-import { getEmailCode, getUserInfo, updateUsername, updateEmail, updatePassword } from '@/api'
+import { getEmailCode } from '@/api/login.js'
+import { getUserInfo, updateUsername, updateEmail, updatePassword } from '@/api/user.js'
 // 获取用户基本信息
 const getInfo = async () => {
   const res = await getUserInfo()
@@ -272,7 +273,7 @@ const passwordUpdateBtn = () => {
   <el-dialog v-model="emailDialog" title="修改绑定邮箱" width="500">
     <el-form ref="emailRef" :model="emailData" :rules="emailRules" label-width="auto">
       <el-form-item label="验证密码" prop="password">
-        <el-input v-model="emailData.password" placeholder="请输入密码" />
+        <el-input type="password" show-password v-model="emailData.password" placeholder="请输入密码" />
       </el-form-item>
       <el-form-item label="新邮箱" prop="email">
         <el-input v-model="emailData.email" placeholder="请输入新邮箱" />
@@ -298,13 +299,13 @@ const passwordUpdateBtn = () => {
   <el-dialog v-model="passwordDialog" title="修改密码" width="500">
     <el-form ref="passwordRef" :model="passwordData" :rules="passwordRules" label-width="auto">
       <el-form-item label="旧密码" prop="password">
-        <el-input v-model="passwordData.password" placeholder="请输入旧密码" />
+        <el-input type="password" show-password v-model="passwordData.password" placeholder="请输入旧密码" />
       </el-form-item>
       <el-form-item label="新密码" prop="new_password">
-        <el-input v-model="passwordData.new_password" placeholder="请输入新密码" />
+        <el-input type="password" show-password v-model="passwordData.new_password" placeholder="请输入新密码" />
       </el-form-item>
       <el-form-item label="确认新密码" prop="confirm_password">
-        <el-input v-model="passwordData.confirm_password" placeholder="请输入确认新密码" />
+        <el-input type="password" show-password v-model="passwordData.confirm_password" placeholder="请输入确认新密码" />
       </el-form-item>
     </el-form>
     <template #footer>
