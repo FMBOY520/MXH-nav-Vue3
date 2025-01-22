@@ -7,7 +7,7 @@ import { Plus, Upload } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
 
-import { getUserInfo, updateInfo } from '@/api/user.js'
+import { getUserInfo, updateAvatar, updateInfo } from '@/api/user.js'
 // 获取用户基本信息
 const getInfo = async () => {
   const res = await getUserInfo()
@@ -21,25 +21,27 @@ import Breadcrumb from '@/components/Breadcrumb.vue'
 // 默认头像
 import DefaultAvatar from '@/assets/img/Avater.png'
 
+import { baseURL } from '@/utils/request.js'
 
-
-// 头像
-const avatarUrl = ref(userStore.info.avatar)
+// 头像上传
+const avatarUrl = ref(userStore.info.avatar ? baseURL + userStore.info.avatar : null)
+const avatarFile = ref()
 const showUpdateAvatar = ref(false)
 const onSelectFile = (uploadFile) => {
-  console.log(uploadFile);
+  // 头像回写
+  avatarUrl.value = URL.createObjectURL(uploadFile.raw)
+  // 创建File
   const formData = new FormData()
-  formData.append('file', uploadFile);
-  // avatarUrl.value = URL.createObjectURL(uploadFile.raw)
-  console.log(formData);
-
+  formData.append('avatar', uploadFile.raw)
+  avatarFile.value = formData
 }
-const uploadAvatar = () => {
-  console.log('上传')
-  const newInfo = userStore.info
-  newInfo.avatar = avatarUrl.value
-  ElMessage.success('修改成功！')
-  showUpdateAvatar.value = false
+const uploadAvatar = async () => {
+  const res = await updateAvatar(avatarFile.value)
+  if (res.data.status === 200) {
+    getInfo()
+    ElMessage.success('修改成功！')
+    showUpdateAvatar.value = false
+  }
 }
 
 // 用户基本资料
@@ -63,7 +65,8 @@ const updateInfoBtn = async () => {
 
   <el-card>
     <!-- 头像 -->
-    <el-avatar @click="showUpdateAvatar = true" :size="100" :src="userStore.info.avatar || DefaultAvatar" />
+    <el-avatar @click="showUpdateAvatar = true" :size="100"
+      :src="userStore.info.avatar ? baseURL + userStore.info.avatar : DefaultAvatar" />
     <el-dialog v-model="showUpdateAvatar" title="修改头像" width="400">
       <el-upload class="avatar-uploader" :auto-upload="false" :show-file-list="false" :on-change="onSelectFile">
         <img class="avatar" v-if="avatarUrl" :src="avatarUrl" />

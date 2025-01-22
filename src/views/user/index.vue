@@ -6,6 +6,8 @@ onMounted(() => document.title = '喵星汇-导航 v3 | 管理后台')
 
 // import { logout } from '@/api'
 
+import { baseURL } from '@/utils/request.js'
+
 // 默认头像
 import DefaultAvatar from '@/assets/img/Avater.png'
 
@@ -45,7 +47,7 @@ const logout = () => {
           <span class="name">{{ userStore.info.nickname ? userStore.info.nickname : userStore.info.email }}</span>
           <el-dropdown>
             <span class="el-dropdown-link">
-              <el-avatar :size="35" :src="userStore.info.avatar || DefaultAvatar" />
+              <el-avatar :size="35" :src="userStore.info.avatar ? baseURL + userStore.info.avatar : DefaultAvatar" />
               <el-icon style="margin-left: 5px;">
                 <CaretBottom />
               </el-icon>
