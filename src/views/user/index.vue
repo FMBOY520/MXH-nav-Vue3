@@ -21,6 +21,15 @@ import Menu from '@/components/Menu.vue'
 import router from '@/router'
 const routeTo = (key) => router.push(key)
 
+// 获取用户基本信息
+import { getUserInfo } from '@/api/user'
+const userInfo = async () => {
+  const res = await getUserInfo()
+  console.log(res.data.data)
+  userStore.setInfo(res.data.data)
+}
+userInfo()
+
 // 退出登录
 const logout = () => {
   ElMessageBox.confirm('确定退出登录吗？', {

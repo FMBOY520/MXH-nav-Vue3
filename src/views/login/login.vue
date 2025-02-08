@@ -29,7 +29,6 @@ const loginBtn = () => {
       const res = await login(data.value)
       console.log(res.data);
       if (res.data.status === 200) {
-        userStore.setInfo(res.data.data)
         userStore.setToken(res.data.token)
         router.push('/user/index')
         ElMessage.success('登录成功')
