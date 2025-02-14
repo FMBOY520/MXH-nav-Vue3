@@ -1,12 +1,14 @@
 <script setup>
 import { ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { View, Edit, Delete, Search, RefreshLeft } from '@element-plus/icons-vue'
+import { Search, RefreshLeft } from '@element-plus/icons-vue'
 import { getCategory, getCategoryInfo, addCategory, updateCategory, updateCategoryState, deleteCategory } from '@/api/category' // API
 import Breadcrumb from '@/components/Breadcrumb.vue' // 面包屑
 
 
 // ========== 获取-分类 ==========
+// 加载
+const loading = ref(true)
 // 搜索表单数据
 const searchForm = ref({ category_name: '', state: '' })
 const searchBtn = () => {
@@ -26,15 +28,18 @@ const categoryDataList = ref([])
 // { id: 4, category_name: '收藏4', state: '待审核' },
 // 获取-分类
 const getCategoryData = async () => {
+  loading.value = true
   const res = await getCategory(searchForm.value)
   console.log(res.data)
   categoryDataList.value = res.data.data
+  loading.value = false
 }
 getCategoryData()
 // ========== 获取-分类 ==========
 
 
 // ========== 获取-分类详情 ==========
+const loadingInfo = ref(true)
 const categoryInfoShow = ref(false)
 // 分类详情数据
 const categoryInfoData = ref({
@@ -46,19 +51,17 @@ const categoryInfoData = ref({
   create_time: '2025-01-01 00:00:00',
   update_time: '2025-01-01 00:00:00',
 })
-
-const active = ref(0)
-
-const next = () => {
-  if (active.value++ > 2) active.value = 0
-}
-
 const getCategoryInfoBtn = async (id) => {
+  // 显示分类详情
   categoryInfoShow.value = true
-  console.log(id)
+  // 开启加载
+  loadingInfo.value = true
+  // 获取数据
   const res = await getCategoryInfo(id)
   console.log(res.data)
   categoryInfoData.value = res.data.data
+  // 加载完毕
+  loadingInfo.value = false
 }
 // ========== 获取-分类详情 ==========
 
@@ -80,8 +83,12 @@ const addCategoryDataReset = () => {
     category_text: '',
   }
 }
+// 添加按钮 和 修改按钮
 const addCategoryBtn = async (id) => {
+  // 显示前重置表单
   addCategoryDataReset()
+  if (addCategoryDataRef.value) addCategoryDataRef.value.resetFields()
+  // 判断 修改/添加
   if (id) {
     addCategoryTitle.value = '修改分类'
     const res = await getCategoryInfo(id)
@@ -91,6 +98,7 @@ const addCategoryBtn = async (id) => {
   } else {
     addCategoryTitle.value = '添加分类'
   }
+  // 显示表单
   addCategoryShow.value = true
 }
 const useAddCategoryBtn = () => {
@@ -117,7 +125,18 @@ const useAddCategoryBtn = () => {
 
 
 // ========== 修改-分类发布状态 ==========
-
+const categoryStateBtn = (data) => {
+  ElMessageBox.confirm('是否确定发布此分类？', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', }).then(async () => {
+    console.log(data)
+    const res = await updateCategoryState({ id: data.id, reason: '申请发布' })
+    console.log(res.data)
+    if (res.data.status === 200) {
+      ElMessage.success(res.data.message)
+    }
+    getCategoryData()
+    getCategoryInfoBtn(data.id)
+  }).catch(() => { })
+}
 // ========== 修改-分类发布状态 ==========
 
 
@@ -127,7 +146,11 @@ const deleteCategoryBtn = (id) => {
     console.log('删除ID：' + id)
     const res = await deleteCategory(id)
     console.log(res.data)
-    ElMessage.success('删除成功！')
+    if (res.data.status === 200) {
+      ElMessage.success('删除成功！')
+    } else {
+      ElMessage.error(res.data.message)
+    }
     getCategoryData()
   }).catch(() => { })
 }
@@ -162,7 +185,7 @@ const deleteCategoryBtn = (id) => {
       <el-button type="primary" @click="addCategoryBtn()">添加分类</el-button>
     </div>
 
-    <el-table :data="categoryDataList" style="width: 100%">
+    <el-table v-loading="loading" :data="categoryDataList" style="width: 100%">
       <!-- 分类名称 -->
       <el-table-column label="分类名称" prop="category_name" width="180">
         <template #default="scope">
@@ -170,9 +193,12 @@ const deleteCategoryBtn = (id) => {
         </template>
       </el-table-column>
       <!-- 状态 -->
-      <el-table-column label="状态" prop="state" width="180">
+      <el-table-column label="状态" prop="state">
         <template #default="scope">
-          <span>{{ scope.row.state }}</span>
+          <span v-if="scope.row.state === '已发布'" style="color: #67c23a;">{{ scope.row.state }}</span>
+          <span v-if="scope.row.state === '待审核'" style="color: #e6a23c;">{{ scope.row.state }}</span>
+          <span v-if="scope.row.state === '已驳回'" style="color: #f56c6c;">{{ scope.row.state }}</span>
+          <span v-if="scope.row.state === '无'">{{ scope.row.state }}</span>
         </template>
       </el-table-column>
       <!-- 操作 -->
@@ -188,20 +214,40 @@ const deleteCategoryBtn = (id) => {
 
   <!-- 分类详情 -->
   <el-drawer v-model="categoryInfoShow" size="50%" title="分类详情">
-    <el-steps style="max-width: 600px" :active="active" finish-status="success">
-      <el-step title="申请发布" />
-      <el-step title="待审核" />
-      <el-step title="已发布" />
-    </el-steps>
-    <el-button style="margin-top: 12px" @click="next">Next step</el-button>
-    <div>
-      <p>分类名称：{{ categoryInfoData.category_name }}</p>
-      <p>分类说明：{{ categoryInfoData.category_text }}</p>
-      <p>状态：{{ categoryInfoData.state }}</p>
-      <p>原因：{{ categoryInfoData.reason }}</p>
-      <p>创建时间：{{ categoryInfoData.create_time }}</p>
-      <p>修改时间：{{ categoryInfoData.update_time }}</p>
-    </div>
+    <el-skeleton :loading="loadingInfo" :rows="5" animated>
+      <!-- 分类名称 -->
+      <h2
+        style="padding: 10px 20px;color: #409eff;font-size: 18px;background-color: #ecf5ff;border: 1px solid #d8ebfe;">
+        {{ categoryInfoData.category_name }}
+      </h2>
+      <!-- 分类说明 -->
+      <p style="margin: 10px 0;padding: 10px;color: #606266;font-size: 14px;line-height: 20px;
+                background-color: #f5f5f5;border: 1px solid #dddddd;">
+        <span style="font-weight: bold;">分类说明：</span>
+        {{ categoryInfoData.category_text }}
+      </p>
+      <!-- 分类状态 -->
+      <p style="padding: 10px;color: #606266;font-size: 14px;line-height: 20px;
+                background-color: #f5f5f5;border: 1px solid #dddddd;">
+        <span style="font-weight: bold;">状态：</span>
+        <span v-if="categoryInfoData.state === '已发布'" style="color: #67c23a;">{{ categoryInfoData.state }}</span>
+        <span v-if="categoryInfoData.state === '待审核'" style="color: #e6a23c;">{{ categoryInfoData.state }}</span>
+        <span v-if="categoryInfoData.state === '已驳回'" style="color: #f56c6c;">{{ categoryInfoData.state }}</span>
+        <span v-if="categoryInfoData.state === '无'">{{ categoryInfoData.state }}</span>
+        <br>
+        <span v-if="categoryInfoData.state === '已驳回'" style="color: #f56c6c;">
+          <span style="font-weight: bold;">原因：</span>{{ categoryInfoData.reason }}
+        </span>
+      </p>
+      <!-- 时间 -->
+      <p style="margin: 10px 0;color: #606266; font-size: 12px;line-height: 20px;">
+        创建时间：{{ categoryInfoData.create_time }}<br>修改时间：{{ categoryInfoData.update_time }}
+      </p>
+      <!-- 发布 -->
+      <el-button @click="categoryStateBtn(categoryInfoData)">
+        {{ categoryInfoData.state === '已发布' || categoryInfoData.state === '待审核' ? '取消发布' : '发布分类' }}
+      </el-button>
+    </el-skeleton>
   </el-drawer>
 
   <!-- 添加分类 和 修改分类 -->

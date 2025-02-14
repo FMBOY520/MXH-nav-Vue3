@@ -1,9 +1,8 @@
 import request from '@/utils/request'
-import { da } from 'element-plus/es/locale'
 
 // 获取-导航
-export const getNavigation = () => {
-    return request.get('/mxh-nav/navigation')
+export const getNavigation = (params) => {
+    return request.get('/mxh-nav/navigation', { params })
 }
 
 // 获取-导航详情

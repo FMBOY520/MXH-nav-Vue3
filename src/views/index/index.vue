@@ -6,8 +6,9 @@ import Footer from './Footer.vue'
 
 <template>
   <div class="index">
-    <p style="font-weight: bold;">Vue3版本测试版（开发中...）</p>
-    <a href="#/user">管理后台</a>
+    <div class="prompt">
+      <p>Vue3版本测试版（开发中...） <a href="#/user">管理后台</a></p>
+    </div>
     <Header></Header>
     <Main></Main>
     <Footer></Footer>
@@ -15,6 +16,11 @@ import Footer from './Footer.vue'
 </template>
 
 <style lang="scss" scoped>
+.prompt {
+  background-color: #ffae00;
+  border: 2px solid #000;
+}
+
 .index {
   background-color: #e493d0;
   background-image:
