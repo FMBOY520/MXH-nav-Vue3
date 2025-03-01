@@ -43,8 +43,10 @@ const uploadAvatar = async () => {
     showUpdateAvatar.value = false
   }
 }
-// 关闭时重置头像
-const avatarReset = () => avatarUrl.value = userStore.info.avatar ? baseURL + userStore.info.avatar : null
+const updateAvatarShow = () => {
+  avatarUrl.value = userStore.info.avatar ? baseURL + userStore.info.avatar : null
+  showUpdateAvatar.value = true
+}
 
 // 用户基本资料
 const data = ref({
@@ -67,9 +69,9 @@ const updateInfoBtn = async () => {
 
   <el-card>
     <!-- 头像 -->
-    <el-avatar @click="showUpdateAvatar = true" :size="100"
+    <el-avatar @click="updateAvatarShow()" :size="100"
       :src="userStore.info.avatar ? baseURL + userStore.info.avatar : DefaultAvatar" />
-    <el-dialog v-model="showUpdateAvatar" :close="avatarReset()" title="修改头像" width="400">
+    <el-dialog v-model="showUpdateAvatar" title="修改头像" width="400">
       <el-upload class="avatar-uploader" :auto-upload="false" :show-file-list="false" :on-change="onSelectFile">
         <img class="avatar" v-if="avatarUrl" :src="avatarUrl" />
         <el-icon v-else>

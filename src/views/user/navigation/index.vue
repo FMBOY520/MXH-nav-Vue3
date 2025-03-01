@@ -244,7 +244,7 @@ const deleteNavigationBtn = (id) => {
       <el-table-column label="分类名称" prop="date" width="180">
         <template #default="scope">
           <el-tag v-if="categoryDataList != ''" type="primary" size="large">
-            {{ categoryDataList.find(i => i.id === scope.row.category_id).category_name }}
+            {{categoryDataList.find(i => i.id === scope.row.category_id).category_name}}
           </el-tag>
         </template>
       </el-table-column>
@@ -278,7 +278,7 @@ const deleteNavigationBtn = (id) => {
       </div>
       <!-- 导航分类 -->
       <el-tag type="primary" size="large" style="margin-top: 10px;">
-        {{ categoryDataList.find(i => i.id === navigationInfoData.category_id).category_name }}
+        {{categoryDataList.find(i => i.id === navigationInfoData.category_id).category_name}}
       </el-tag>
       <!-- 导航说明 -->
       <p style="margin: 10px 0;padding: 10px;color: #606266;font-size: 14px;line-height: 20px;
