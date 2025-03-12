@@ -6,7 +6,7 @@ onMounted(() => document.title = '喵星汇-导航 v3 | 404')
 <template>
   <div class="container">
     <div class="box">
-      <img src="@/assets/img/logo/smile_50x50.ico" alt="">
+      <img src="/favicon.ico" alt="">
       <h2>. . . 资源跑丢了 . . .</h2>
     </div>
   </div>

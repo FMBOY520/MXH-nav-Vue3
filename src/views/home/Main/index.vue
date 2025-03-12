@@ -1,10 +1,16 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { getDate } from '@/utils/getDate.js'
 import axios from 'axios'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 
-// 日期
+// 路由跳转
+import router from '@/router'
+const routeTo = (key, id) => router.push({ path: key, query: { id } })
+
+
+// ========== ========== 日期 ========== ==========
+import { getDate } from '@/utils/getDate.js'
+
 const date_1 = ref('00:00:00')
 const date_2 = ref('0000年00月00日 星期日')
 const date_3 = ref('-')
@@ -21,9 +27,7 @@ onBeforeUnmount(() => clearInterval(interval))
 axios({ url: 'https://hmajax.itheima.net/api/ambition' }).then(res => { date_3.value = res.data.data })
 
 
-
-
-// 搜索
+// ========== ========== 搜索 ========== ==========
 const search = ref({
   url: 'https://www.baidu.com/s',
   name: 'wd',
@@ -46,7 +50,6 @@ const searchBtn = (e) => {
     e.preventDefault()
   }
 }
-
 // 搜索列表切换方法
 const searchListBtn = (e) => {
   if (e.target.tagName === 'A') {
@@ -72,25 +75,71 @@ onMounted(() => {
 })
 
 
-
-// 模块内容
-// 格式：module_content: [{ title: '', content: [{ name: '', logo: '', url: '' },] }],
-const module_content = ref([])
-// 获取模块内容
-const getModuleContent = () => {
-  // 请求地址可以是json文件，也可以是后端接口（后端管理端可以自己编写），例：http://localhost:8080/mxh-nav/list
-  axios.get('/json/mxh-nav.json').then(res => { module_content.value = res.data.data })
+// ========== ========== 导航数据 ========== ==========
+const navigationDataList = ref([])
+const data = [
+  {
+    category_name: '我的常用',
+    navigation: [
+      {
+        id: 1,
+        category_id: 1,
+        navigation_name: '百度一下',
+        navigation_logo: "https://www.baidu.com/favicon.ico",
+        navigation_url: "https://www.baidu.com",
+      },
+      {
+        id: 1,
+        category_id: 1,
+        navigation_name: '百度翻译',
+        navigation_logo: "https://fanyi.baidu.com/favicon.ico",
+        navigation_url: "https://fanyi.baidu.com",
+      },
+      {
+        id: 1,
+        category_id: 1,
+        navigation_name: '哔哩哔哩',
+        navigation_logo: "https://www.bilibili.com/favicon.ico",
+        navigation_url: "https://www.bilibili.com",
+      },
+      {
+        id: 1,
+        category_id: 1,
+        navigation_name: 'CSDN',
+        navigation_logo: "https://www.csdn.net/favicon.ico",
+        navigation_url: "https://www.csdn.net",
+      },
+    ]
+  }
+]
+const getNavigationDataList = () => {
+  navigationDataList.value = data
 }
-getModuleContent()
+getNavigationDataList()
+
+
+import { ElMessageBox } from 'element-plus'
+
+const dialogVisible = ref(false)
+
+const handleClose = () => {
+  ElMessageBox.confirm('Are you sure to close this dialog?')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
+}
 </script>
 
 <template>
-  <main>
+  <div class="main">
     <!-- 日期 -->
     <div class="date">
-      <h2 class="date-text text1">{{ date_1 }}</h2>
-      <h4 class="date-text text2">{{ date_2 }}</h4>
-      <h6 class="date-text text3">{{ date_3 }}</h6>
+      <h2 class="text text1">{{ date_1 }}</h2>
+      <h4 class="text text2">{{ date_2 }}</h4>
+      <h6 class="text text3">{{ date_3 }}</h6>
     </div>
 
     <!-- 搜索 -->
@@ -106,66 +155,86 @@ getModuleContent()
         <a href="javascript:;" v-for="item in search.list">{{ item.title }}</a>
       </div>
     </div>
-
     <!-- 模块内容 -->
     <div class="main-module">
-      <div class="main-module-box" v-for="item in module_content">
-        <h2 class="title">{{ item.title }}</h2>
+      <div class="main-module-box" v-for="item in navigationDataList">
+        <h2 class="title">{{ item.category_name }}</h2>
         <div class="content">
-          <div class="box" v-for="i in item.content">
-            <a class="mod" target="_blank" :href="i.url" :title="i.name">
+          <div class="box" v-for="i in item.navigation">
+            <a class="mod" target="_blank" :href="i.navigation_url" :title="i.navigation_name">
+              <div class="logo">
+                <div class="img">
+                  <img :src="i.navigation_logo" alt="">
+                </div>
+              </div>
+              <p class="name">{{ i.navigation_name }}</p>
+            </a>
+            <!-- <a class="mod" href="javascript:;" :title="i.name" @click="dialogVisible = true">
               <div class="logo">
                 <div class="img">
                   <img :src="i.logo" alt="">
                 </div>
               </div>
               <p class="name">{{ i.name }}</p>
-            </a>
+              <button style="position: absolute;top: 0;" @click="routeTo('/info', 12)">测试</button>
+            </a> -->
           </div>
         </div>
       </div>
     </div>
-  </main>
+
+    <el-dialog :modal="false" v-model="dialogVisible" title="Tips" width="500" :before-close="handleClose"
+      style="background-color: #ffffff60;backdrop-filter: blur(10px);">
+      <span>This is a message</span>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="dialogVisible = false">
+            Confirm
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
-main {
-  // padding: 50px 0;
+.main {
   width: 100%;
   min-height: 100vh;
-  // background-color: #222;
 
-  /* 日期 */
-  .date-text {
+  // 日期
+  .date {
     color: #fff;
     text-align: center;
-  }
 
-  .date-text {
-    color: transparent;
-    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.8), 0px 4px 4px rgba(0, 0, 0, 0.1);
-    font-family: 'Quicksand', sans-serif;
-  }
+    .text {
+      color: transparent;
+      text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.8), 0px 4px 4px rgba(0, 0, 0, 0.1);
+      font-family: 'Quicksand', sans-serif;
+    }
 
-  .date-text.text1 {
-    font-size: 5rem;
-    letter-spacing: .4rem;
-  }
+    .text.text1 {
+      font-size: 60px;
+      letter-spacing: .4rem;
+    }
 
-  .date-text.text2 {
-    margin: 10px 0;
-    font-size: 18px;
-    letter-spacing: .2rem;
-  }
+    .text.text2 {
+      margin: 10px 0;
+      font-size: 18px;
+      letter-spacing: .2rem;
+    }
 
-  .date-text.text3 {
-    margin: 0 auto;
-    width: 80%;
-    min-width: 300px;
-    max-width: 800px;
-    font-size: 14px;
+    .text.text3 {
+      margin: 0 auto;
+      width: 80%;
+      min-width: 300px;
+      max-width: 800px;
+      font-size: 14px;
+    }
   }
 
   /* 搜索 */
@@ -283,6 +352,7 @@ main {
   }
 
   .main-module-box .box {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -27,10 +27,10 @@ const loginBtn = () => {
   dataRef.value.validate(async (value) => {
     if (value) {
       const res = await login(data.value)
-      console.log(res.data);
+      console.log(res.data)
       if (res.data.status === 200) {
         userStore.setToken(res.data.token)
-        router.push('/user/index')
+        router.push('/')
         ElMessage.success('登录成功')
       } else {
         ElMessage.error('用户名或密码错误！')

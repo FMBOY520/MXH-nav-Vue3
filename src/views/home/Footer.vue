@@ -14,7 +14,7 @@ const version = ref('1.0.0')
       <div class="info-left">
         <div class="title">
           <div class="logo">
-            <img src="@/assets/img/logo/logo.png" alt="">
+            <img src="/favicon.ico" alt="">
           </div>
           <div class="name">
             <h2>喵星汇</h2>

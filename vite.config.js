@@ -3,7 +3,6 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
@@ -22,11 +21,6 @@ export default defineConfig({
     host: true, // 监听所有 IP 地址
     open: true, // 启动时自动打开浏览器
     proxy: {
-      '/json': {
-        target: 'https://mxh.fmboy.com/json', // 代理目标
-        changeOrigin: true,                // 修改请求头中的 Origin
-        rewrite: (path) => path.replace(/^\/json/, '') // 重写路径
-      },
       '/api': {
         target: 'http://localhost:9090', // 代理目标
         changeOrigin: true,                // 修改请求头中的 Origin
