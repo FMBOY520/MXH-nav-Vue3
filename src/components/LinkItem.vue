@@ -1,66 +1,105 @@
 <script setup>
+import { ArrowRightBold } from '@element-plus/icons-vue'
+// 路由跳转
+import router from '@/router'
+const routeTo = (path, id) => router.push({ path, query: { id } })
+
 const props = defineProps({
-  name: { type: String, default: '百度一下' },
-  url: { type: String, default: 'https://www.baidu.com' },
-  logo: { type: String, default: 'https://www.baidu.com/favicon.ico' },
+  id: Number,
+  object: {
+    type: Object,
+    default: {
+      navigation_name: '百度一下',
+      navigation_logo: "https://www.baidu.com/favicon.ico",
+      navigation_url: "https://www.baidu.com",
+    }
+  },
 })
 </script>
 
 <template>
-  <a class="link" target="_blank" title="子模块" :href="url">
-    <img :src="logo">
-    <p>{{ name }}</p>
-  </a>
+  <div class="link-item">
+    <a class="link" target="_blank" :title="object.navigation_name" :href="object.navigation_url">
+      <img :src="object.navigation_logo">
+      <p>{{ object.navigation_name }}</p>
+    </a>
+    <div class="info">
+      <el-tooltip class="box-item" content="导航详情" placement="right" :hide-after="0">
+        <el-button @click="routeTo('/info', id)" :icon="ArrowRightBold" size="small" circle />
+      </el-tooltip>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.link {
-  display: inline-block;
+.link-item {
+  position: relative;
+  display: flex;
   margin: 5px;
-  padding: 10px;
   width: 150px;
-  background-color: #ffffff60;
-  border-radius: 10px;
-  box-shadow: 0 0 10px -5px #000;
-  overflow: hidden;
   transition: .2s;
 
-  img {
-    display: block;
-    margin: auto;
-    padding: 8px;
-    width: 40px;
-    height: 40px;
-    background-color: #ffffff99;
-    border-radius: 8px;
+  .link {
+    padding: 10px;
+    width: 100%;
+    background-color: #ffffff60;
+    border-radius: 10px;
+    box-shadow: 0 0 10px -5px #000;
+    overflow: hidden;
+    transition: .2s;
+
+    img {
+      display: block;
+      margin: auto;
+      padding: 8px;
+      width: 40px;
+      height: 40px;
+      background-color: #ffffff99;
+      border-radius: 8px;
+    }
+
+    p {
+      margin-top: 5px;
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+      font-family: '楷体';
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
-  p {
-    margin-top: 5px;
-    color: #fff;
-    font-size: 14px;
-    text-align: center;
-    font-family: '楷体';
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  .info {
+    position: absolute;
+    right: 0;
+    display: none;
+    align-items: center;
+    width: 20px;
+    height: 100%;
   }
 }
 
-.link:hover {
-  background-color: #ffffff95;
-  box-shadow: 0 0 10px 0 #fff;
-  transform: scale(.95);
+.link-item:hover {
+  .link {
+    background-color: #ffffff95;
+    box-shadow: 0 0 10px 0 #fff;
+    transform: scale(.95);
+  }
+
+  .info {
+    display: flex;
+  }
 }
 
 @media (max-width: 650px) {
-  .link {
+  .link-item {
     width: 30%;
   }
 }
 
 @media (max-width: 400px) {
-  .link {
+  .link-item {
     width: 45%;
   }
 }

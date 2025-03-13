@@ -1,9 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import LinkItem from '@/components/LinkItem.vue'
-// 路由跳转
-import router from '@/router'
-const routeTo = (path, id) => router.push({ path, query: { id } })
 // ========== ========== 导航数据 ========== ==========
 const navigationDataList = ref([])
 const data = [
@@ -18,25 +15,32 @@ const data = [
         navigation_url: "https://www.baidu.com",
       },
       {
-        id: 1,
+        id: 2,
         category_id: 1,
         navigation_name: '百度翻译',
         navigation_logo: "https://fanyi.baidu.com/favicon.ico",
         navigation_url: "https://fanyi.baidu.com",
       },
       {
-        id: 1,
+        id: 3,
         category_id: 1,
         navigation_name: '哔哩哔哩',
         navigation_logo: "https://www.bilibili.com/favicon.ico",
         navigation_url: "https://www.bilibili.com",
       },
       {
-        id: 1,
+        id: 4,
         category_id: 1,
         navigation_name: 'CSDN',
         navigation_logo: "https://www.csdn.net/favicon.ico",
         navigation_url: "https://www.csdn.net",
+      },
+      {
+        id: 5,
+        category_id: 1,
+        navigation_name: 'Gitee',
+        navigation_logo: "https://gitee.com/favicon.ico",
+        navigation_url: "https://gitee.com",
       },
     ]
   }
@@ -52,7 +56,7 @@ getNavigationDataList()
     <div class="items" v-for="item in data">
       <h2 class="title">{{ item.category_name }}</h2>
       <div class="item">
-        <LinkItem v-for="i in item.navigation" :name="i.navigation_name" :url="i.navigation_url" :logo="i.navigation_logo"></LinkItem>
+        <LinkItem v-for="i in item.navigation" :id="i.id" :object="i"></LinkItem>
       </div>
     </div>
   </div>
