@@ -2,58 +2,19 @@
 import { ref } from 'vue'
 import LinkItem from '@/components/LinkItem.vue'
 // ========== ========== 导航数据 ========== ==========
+import axios from 'axios'
 const navigationDataList = ref([])
-const data = [
-  {
-    category_name: '我的常用',
-    navigation: [
-      {
-        id: 1,
-        category_id: 1,
-        navigation_name: '百度一下',
-        navigation_logo: "https://www.baidu.com/favicon.ico",
-        navigation_url: "https://www.baidu.com",
-      },
-      {
-        id: 2,
-        category_id: 1,
-        navigation_name: '百度翻译',
-        navigation_logo: "https://fanyi.baidu.com/favicon.ico",
-        navigation_url: "https://fanyi.baidu.com",
-      },
-      {
-        id: 3,
-        category_id: 1,
-        navigation_name: '哔哩哔哩',
-        navigation_logo: "https://www.bilibili.com/favicon.ico",
-        navigation_url: "https://www.bilibili.com",
-      },
-      {
-        id: 4,
-        category_id: 1,
-        navigation_name: 'CSDN',
-        navigation_logo: "https://www.csdn.net/favicon.ico",
-        navigation_url: "https://www.csdn.net",
-      },
-      {
-        id: 5,
-        category_id: 1,
-        navigation_name: 'Gitee',
-        navigation_logo: "https://gitee.com/favicon.ico",
-        navigation_url: "https://gitee.com",
-      },
-    ]
-  }
-]
 const getNavigationDataList = () => {
-  navigationDataList.value = data
+  axios.get('/json/mxh-nav.json').then(res => {
+    navigationDataList.value = res.data.data
+  })
 }
 getNavigationDataList()
 </script>
 
 <template>
   <div class="module">
-    <div class="items" v-for="item in data">
+    <div class="items" v-for="item in navigationDataList">
       <h2 class="title">{{ item.category_name }}</h2>
       <div class="item">
         <LinkItem v-for="i in item.navigation" :id="i.id" :object="i"></LinkItem>

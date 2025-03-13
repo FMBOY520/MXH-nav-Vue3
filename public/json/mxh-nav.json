@@ -1,0 +1,41 @@
+{
+  "status": 200,
+  "message": "获取成功！",
+  "data": [
+    {
+      "category_name": "我的常用",
+      "navigation": [
+        {
+          "id": 1,
+          "name": "百度一下",
+          "logo": "https://www.baidu.com/favicon.ico",
+          "url": "https://www.baidu.com"
+        },
+        {
+          "id": 2,
+          "name": "百度翻译",
+          "logo": "https://fanyi.baidu.com/favicon.ico",
+          "url": "https://fanyi.baidu.com"
+        },
+        {
+          "id": 3,
+          "name": "哔哩哔哩",
+          "logo": "https://www.bilibili.com/favicon.ico",
+          "url": "https://www.bilibili.com"
+        },
+        {
+          "id": 4,
+          "name": "CSDN",
+          "logo": "https://www.csdn.net/favicon.ico",
+          "url": "https://www.csdn.net"
+        },
+        {
+          "id": 5,
+          "name": "Gitee",
+          "logo": "https://gitee.com/favicon.ico",
+          "url": "https://gitee.com"
+        }
+      ]
+    }
+  ]
+}

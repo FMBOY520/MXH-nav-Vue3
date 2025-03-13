@@ -9,9 +9,9 @@ const props = defineProps({
   object: {
     type: Object,
     default: {
-      navigation_name: '百度一下',
-      navigation_logo: "https://www.baidu.com/favicon.ico",
-      navigation_url: "https://www.baidu.com",
+      name: '百度一下',
+      logo: "https://www.baidu.com/favicon.ico",
+      url: "https://www.baidu.com",
     }
   },
 })
@@ -19,9 +19,9 @@ const props = defineProps({
 
 <template>
   <div class="link-item">
-    <a class="link" target="_blank" :title="object.navigation_name" :href="object.navigation_url">
-      <img :src="object.navigation_logo">
-      <p>{{ object.navigation_name }}</p>
+    <a class="link" target="_blank" :title="object.name" :href="object.url">
+      <img :src="object.logo">
+      <p>{{ object.name }}</p>
     </a>
     <div class="info">
       <el-tooltip class="box-item" content="导航详情" placement="right" :hide-after="0">
