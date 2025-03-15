@@ -24,7 +24,7 @@ const props = defineProps({
       <p>{{ object.name }}</p>
     </a>
     <div class="info">
-      <el-tooltip class="box-item" content="导航详情" placement="right" :hide-after="0">
+      <el-tooltip content="导航详情" placement="right" :hide-after="0">
         <el-button @click="routeTo('/info', id)" :icon="ArrowRightBold" size="small" circle />
       </el-tooltip>
     </div>

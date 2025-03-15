@@ -91,7 +91,7 @@ onMounted(() => navFixed())
         <a href="https://gitee.com/FMBOY" target="_blank">Gitee</a>
         <a href="https://github.com/FMBOY520" target="_blank">GitHub</a>
         <a href="https://blog.csdn.net/m0_74175846" target="_blank">CSDN</a>
-        <a href="https://mxh.fmboy.com/web/AI" target="_blank">AI</a>
+        <a href="https://space.bilibili.com/3546629109975913" target="_blank">Bilibili</a>
       </div>
 
       <div class="user-menu">
