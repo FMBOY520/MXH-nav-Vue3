@@ -10,10 +10,14 @@ const routes = [
       { path: '/info', component: () => import('@/views/home/Main/info.vue') },
     ]
   },
-  { path: '/login', component: () => import('@/views/login/login.vue'), },
-  { path: '/register', component: () => import('@/views/login/register.vue'), },
-  { path: '/reset', component: () => import('@/views/login/reset.vue'), },
-
+  {
+    path: '/login', component: () => import('@/views/login/index.vue'),
+    children: [
+      { path: '/login', component: () => import('@/views/login/login.vue'), },
+      { path: '/register', component: () => import('@/views/login/register.vue'), },
+      { path: '/reset', component: () => import('@/views/login/reset.vue'), },
+    ]
+  },
   {
     path: '/user', component: () => import('@/views/user/index.vue'),
     redirect: '/user/index',

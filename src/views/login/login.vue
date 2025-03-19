@@ -41,97 +41,54 @@ const loginBtn = () => {
 </script>
 
 <template>
-  <div class="login">
-    <div class="box">
-      <h2 class="title">MXH-LOGIN</h2>
-      <el-form ref="dataRef" :model="data" :rules="dataRules">
-        <el-form-item prop="username">
-          <el-input class="username" v-model="data.username" placeholder="用户名" />
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input type="password" show-password class="password" v-model="data.password" placeholder="密码" />
-        </el-form-item>
-      </el-form>
-      <button class="btnLogin" @click="loginBtn()">登录</button>
-      <div class="account">
-        <span>没有账号？<button @click="router.push('/register')">立即注册</button></span>
-        <span><button @click="router.push('/reset')">忘记密码？</button></span>
-      </div>
-      <div class="copyright">
-        Copyright © 2024-2025
-        <a href="/" style="color: #409eff;">喵星汇</a>
-      </div>
-    </div>
+  <h2 class="title">MXH-LOGIN</h2>
+  <el-form ref="dataRef" :model="data" :rules="dataRules">
+    <el-form-item prop="username">
+      <el-input v-model="data.username" placeholder="用户名" />
+    </el-form-item>
+    <el-form-item prop="password">
+      <el-input v-model="data.password" placeholder="密码" type="password" show-password />
+    </el-form-item>
+  </el-form>
+  <el-button class="btnLogin" @click="loginBtn()">登录</el-button>
+  <div class="account">
+    <span>没有账号？<el-button type="primary" size="small" link @click="router.push('/register')">立即注册</el-button></span>
+    <el-button type="primary" size="small" link @click="router.push('/reset')">忘记密码？</el-button>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.login {
+.title {
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  text-shadow: 0 0 5px #fff;
+}
+
+.el-form {
+  .el-input {
+    height: 40px;
+    font-size: 12px;
+  }
+}
+
+.btnLogin {
+  margin: 20px 0;
+  width: 100%;
+  height: 40px;
+  font-size: 12px;
+}
+
+.account {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
+  justify-content: space-between;
 
-  .box {
-    margin: 20px;
-    padding: 20px;
-    width: 400px;
-    min-width: 300px;
-    background-color: #88888850;
-    border-radius: 4px;
-
-    .title {
-      margin-bottom: 10px;
-      text-align: center;
-      font-size: 20px;
-    }
-
-    .username,
-    .password {
-      width: 100%;
-      height: 40px;
-      font-size: 12px;
-    }
-
-    .btnLogin {
-      margin: 20px 0;
-      width: 100%;
-      height: 40px;
-      font-size: 12px;
-      background-color: #f0f0f0;
-      border: none;
-      border-radius: 4px;
-      transition: .2s;
-      cursor: pointer;
-    }
-
-    .btnLogin:hover {
-      background-color: #fcfcfc;
-    }
-
-    .account {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 12px;
-
-      button {
-        color: #1f75cb;
-        font-size: 12px;
-        background-color: #ffffff00;
-        border: none;
-        cursor: pointer;
-      }
-    }
-
-    .copyright {
-      margin-top: 20px;
-      width: 100%;
-      color: #6c757d;
-      font-size: 12px;
-      text-align: center;
-    }
+  span {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
   }
 }
 </style>
